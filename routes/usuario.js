@@ -5,6 +5,7 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 const bcrypt = require("bcryptjs")
 const passport = require("passport")
+const {eAdmin} = require('../helpers/eAdmin')
 
 
 router.get("/registro", (req,res) =>{
@@ -24,7 +25,7 @@ router.post("/registro", (req,res) => {
     if (!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null) {
         erros.push({texto: "Senha iválida"})
     }
-    if (req.body.senha.length < 8) {
+    if (req.body.senha.length < 4) {
         erros.push({texto: "A senha precisa ter nomínimo oito caracteres"})
     }
     if (req.body.senha != req.body.senha2) {
@@ -39,11 +40,14 @@ router.post("/registro", (req,res) => {
                 req.flash("error_msg", "Email já cadastrado em nosso sistema")
                 res.redirect("/usuarios/registro")
             } else {
+
                 const novoUsuario = new Usuario({
                     nome: req.body.nome, 
                     email: req.body.email,
                     senha: req.body.senha
+                    
                 })
+               
                 bcrypt.genSalt(10, (err, salt) =>{
                     bcrypt.hash(novoUsuario.senha, salt, (err, hash) => {
                         if (err) {
@@ -66,6 +70,10 @@ router.post("/registro", (req,res) => {
             res.redirect("/")
         })
     }
+})
+
+router.get('/registro', (req, res) => {
+    
 })
 
 router.get("/login", (req,res) => {

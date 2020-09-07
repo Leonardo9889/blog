@@ -112,7 +112,8 @@ app.get('/404', (req, res)=>{
 app.use('/admin', admin)
 app.use('/usuarios', usuarios)
 //Outros
-const PORT = process.env.PORT || 8181
+
+const PORT = process.env.PORT || 9090
 app.listen(PORT, ()=>{
 console.log('Sevidor em operação...')
-})
+})  
